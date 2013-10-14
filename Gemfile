@@ -5,6 +5,8 @@ gem 'rails', '4.0.0'
 
 gem 'rails-api'
 
+gem 'mongoid', github: 'mongoid/mongoid'
+gem 'bson_ext'
 
 
 # To use ActiveModel has_secure_password
