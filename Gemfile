@@ -8,6 +8,14 @@ gem 'rails-api'
 gem 'mongoid', github: 'mongoid/mongoid'
 gem 'bson_ext'
 
+gem 'rspec-rails', :group => [:test, :development]
+
+group :test do
+  gem 'database_cleaner'
+  gem 'mongoid-rspec'
+  gem 'guard-rspec', github: 'guard/guard-rspec'
+end
+
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
