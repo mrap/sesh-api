@@ -7,6 +7,8 @@ gem 'rails-api'
 
 gem 'mongoid', github: 'mongoid/mongoid'
 gem 'bson_ext'
+gem 'devise'
+
 
 gem 'rspec-rails', :group => [:test, :development]
 
