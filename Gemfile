@@ -5,11 +5,12 @@ gem 'rails', '4.0.0'
 
 gem 'rails-api'
 
+gem 'factory_girl_rails'
 gem 'mongoid', github: 'mongoid/mongoid'
 gem 'bson_ext'
 gem 'devise'
 
-
+# Testing
 gem 'rspec-rails', :group => [:test, :development]
 
 group :test do
