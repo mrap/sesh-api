@@ -16,13 +16,11 @@ describe Api::V1::UsersController do
     end
   end
 
-  describe 'fetching a user' do
+  describe 'fetching a user by id: slug' do
     let!(:user) { create(:user) }
-    subject { get :show, id: user.id, version: 1 }
+    subject { get :show, id: user.slug, version: 1 }
 
     it { should be_singular_resource }
-
-    it 'should be found by user._slug'
   end
 
 end
