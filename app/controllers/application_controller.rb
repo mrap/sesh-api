@@ -1,4 +1,4 @@
-class ApplicationController < ActionController::API
+class ApplicationController < RocketPants::Base
 
   # Devise requires MimeResponds and StrongParameters modules
   # Source: http://www.emilsoman.com/blog/2013/05/18/building-a-tested/

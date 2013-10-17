@@ -9,6 +9,11 @@ require 'rspec/autorun'
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|
+
+  # Rocket Pants Matchers
+  config.include RocketPants::TestHelper,    :type => :controller
+  config.include RocketPants::RSpecMatchers, :type => :controller
+
   # If true, the base class of anonymous controllers will be inferred
   # automatically. This will be the default behavior in future versions of
   # rspec-rails.
@@ -19,6 +24,9 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+
+  # mongoid-rspec
+  config.include Mongoid::Matchers, type: :model
 
   # Factory Girl Syntax:
   # i.e. create(:user)

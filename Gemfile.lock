@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: git://github.com/mongoid/mongoid.git
-  revision: 60a46908c248572c24a062e8a482be13c6d4bff9
+  revision: ddfe7773d4689473525e2925d232889b4d6d6f90
   specs:
     mongoid (4.0.0)
       activemodel (~> 4.0.0)
@@ -43,6 +43,9 @@ GEM
       multi_json (~> 1.3)
       thread_safe (~> 0.1)
       tzinfo (~> 0.3.37)
+    api_smith (1.3.0)
+      hashie (>= 1.0, < 3.0)
+      httparty
     arel (4.0.0)
     atomic (1.1.14)
     bcrypt-ruby (3.1.2)
@@ -68,15 +71,20 @@ GEM
       railties (>= 3.0.0)
     ffi (1.9.0)
     formatador (0.2.4)
-    guard (2.0.5)
+    guard (2.1.0)
       formatador (>= 0.2.4)
-      listen (~> 2.0)
+      listen (~> 2.1)
       lumberjack (~> 1.0)
       pry (>= 0.9.12)
       thor (>= 0.18.1)
+    hashie (2.0.5)
     hike (1.2.3)
+    httparty (0.12.0)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
     i18n (0.6.5)
-    listen (2.1.0)
+    json (1.8.0)
+    listen (2.1.1)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
@@ -87,6 +95,7 @@ GEM
     method_source (0.8.2)
     mime-types (1.25)
     minitest (4.7.5)
+    moneta (0.7.20)
     mongoid-rspec (1.9.0)
       mongoid (>= 3.0.1)
       rake
@@ -94,7 +103,8 @@ GEM
     moped (2.0.0.beta3)
       bson (~> 2.0.0.rc3)
       optionable (~> 0.1.1)
-    multi_json (1.8.1)
+    multi_json (1.8.2)
+    multi_xml (0.5.5)
     optionable (0.1.1)
     origin (1.1.0)
     orm_adapter (0.4.0)
@@ -127,14 +137,21 @@ GEM
     rb-fsevent (0.9.3)
     rb-inotify (0.9.2)
       ffi (>= 0.5.0)
+    rocket_pants (1.9.1)
+      actionpack (>= 3.0, < 5.0)
+      api_smith
+      hashie (>= 1.0, < 3)
+      moneta
+      railties (>= 3.0, < 5.0)
+      will_paginate (~> 3.0)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
-    rspec-core (2.14.5)
+    rspec-core (2.14.6)
     rspec-expectations (2.14.3)
       diff-lcs (>= 1.1.3, < 2.0)
-    rspec-mocks (2.14.3)
+    rspec-mocks (2.14.4)
     rspec-rails (2.14.0)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
@@ -148,7 +165,7 @@ GEM
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-    sprockets-rails (2.0.0)
+    sprockets-rails (2.0.1)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (~> 2.8)
@@ -163,6 +180,7 @@ GEM
     tzinfo (0.3.38)
     warden (1.2.3)
       rack (>= 1.0)
+    will_paginate (3.0.5)
 
 PLATFORMS
   ruby
@@ -177,4 +195,5 @@ DEPENDENCIES
   mongoid-rspec
   rails (= 4.0.0)
   rails-api
+  rocket_pants (~> 1.0)
   rspec-rails
