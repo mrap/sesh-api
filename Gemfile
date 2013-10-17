@@ -7,9 +7,10 @@ gem 'rails-api'
 gem 'rocket_pants', '~> 1.0'
 
 gem 'factory_girl_rails'
-gem 'mongoid', github: 'mongoid/mongoid'
+gem 'mongoid', github: 'mrap/mongoid'
 gem 'bson_ext'
 gem 'devise'
+gem 'mongoid_slug'
 
 # Testing
 group :test, :development do
