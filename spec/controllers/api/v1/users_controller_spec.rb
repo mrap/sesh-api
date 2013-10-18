@@ -16,11 +16,19 @@ describe Api::V1::UsersController do
     end
   end
 
-  describe 'fetching a user by id: slug' do
+  describe 'fetching a user' do
     let!(:user) { create(:user) }
-    subject { get :show, id: user.slug, version: 1 }
 
-    it { should be_singular_resource }
+    context 'with valid slug' do
+      subject { get :show, id: user.slug, version: 1 }
+      it { should be_successful }
+      it { should be_singular_resource }
+    end
+
+    context 'with invalid slug' do
+      subject { get :show, id: 'invalid-slug', version: 1 }
+      its(:status) { should eq 404 }
+    end
   end
 
 end

@@ -15,7 +15,11 @@ class Api::V1::UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
 
-    expose json: @user
+    if @user
+      expose @user
+    else
+      error! :not_found
+    end
   end
 
   # POST /users
