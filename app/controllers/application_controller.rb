@@ -5,4 +5,8 @@ class ApplicationController < RocketPants::Base
   include ActionController::MimeResponds
   include ActionController::StrongParameters
 
+  map_error! Mongoid::Errors::Validations do |exception|
+    RocketPants::InvalidResource.new exception.record.errors
+  end
+
 end
