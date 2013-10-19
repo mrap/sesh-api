@@ -25,12 +25,12 @@ class Api::V1::UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(params[:user])
+    @user = User.new(user_params)
 
     if @user.save
-      expose json: @user, status: :created, location: @user
+      expose @user, status: :created, location: @user
     else
-      expose json: @user.errors, status: :unprocessable_entity
+      error! :invalid_resource, @user.errors
     end
   end
 
@@ -53,5 +53,11 @@ class Api::V1::UsersController < ApplicationController
     @user.destroy
 
     head :no_content
+  end
+
+  private
+
+  def user_params
+    params.required(:user).permit(:username)
   end
 end
