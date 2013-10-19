@@ -1,6 +1,7 @@
 SeshApi::Application.routes.draw do
 
   api versions: 1, module: "api/v1" do
+    devise_for :users
     resources :users, except: [:new, :edit]
   end
 

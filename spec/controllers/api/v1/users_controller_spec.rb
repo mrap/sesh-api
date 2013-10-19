@@ -31,14 +31,16 @@ describe Api::V1::UsersController do
   describe 'creating a user' do
 
     context 'with valid parameters' do
-      let(:valid_user) { build(:user) }
-      before(:each) { post :create, user: valid_user.attributes }
+      let(:valid_user_attributes) { { username: 'roland',
+                                      email:    'roland@example.com',
+                                      password: 'password'  } }
+      before(:each) { post :create, user: valid_user_attributes }
       subject { response }
 
-      its(:status) { should eq 201 }
+      its(:status) { should eq 201 } # created
       its(:decoded_body) { should have(1).username }
       it 'should return the correct user' do
-        content_body['username'].should eq valid_user.username
+        content_body['username'].should eq valid_user_attributes[:username]
       end
     end
 
