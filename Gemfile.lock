@@ -1,9 +1,9 @@
 GIT
   remote: git://github.com/guard/guard-rspec.git
-  revision: 00aba6f1c7ee5fc1b3840ded7be79a75d1b6a55e
+  revision: cf8822134ea88985f8abf3e8d11042863f40154b
   specs:
-    guard-rspec (4.0.1)
-      guard (~> 2.0)
+    guard-rspec (4.0.3)
+      guard (>= 2.1.1)
       rspec (~> 2.14)
 
 GIT
@@ -72,7 +72,7 @@ GEM
       railties (>= 3.0.0)
     ffi (1.9.0)
     formatador (0.2.4)
-    guard (2.1.0)
+    guard (2.1.1)
       formatador (>= 0.2.4)
       listen (~> 2.1)
       lumberjack (~> 1.0)
@@ -84,7 +84,7 @@ GEM
       json (~> 1.8)
       multi_xml (>= 0.5.2)
     i18n (0.6.5)
-    json (1.8.0)
+    json (1.8.1)
     listen (2.1.1)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
