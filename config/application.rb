@@ -13,10 +13,11 @@ module SeshApi
   class Application < Rails::Application
 
     config.generators do |g|
-      g.view_specs false
-      g.helper_specs false
-      g.request_specs false
-      g.routing_specs false
+      g.view_specs        false
+      g.helper_specs      false
+      g.request_specs     false
+      g.routing_specs     false
+      g.controller_specs  false
     end
 
     # Settings in config/environments/* take precedence over those specified here.
