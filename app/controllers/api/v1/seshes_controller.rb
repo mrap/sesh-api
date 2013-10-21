@@ -25,12 +25,12 @@ class Api::V1::SeshesController < ApplicationController
   # POST /seshes
   # POST /seshes.json
   def create
-    @sesh = Sesh.new(params[:sesh])
+    @sesh = Sesh.new(new_sesh_params)
 
     if @sesh.save
-      render json: @sesh, status: :created, location: @sesh
+      expose @sesh, status: :created, location: @sesh
     else
-      render json: @sesh.errors, status: :unprocessable_entity
+      expose error! :invalid_resource, @sesh.errors
     end
   end
 
@@ -54,4 +54,13 @@ class Api::V1::SeshesController < ApplicationController
 
     head :no_content
   end
+
+  private
+
+    def new_sesh_params
+      params.required(:sesh).permit(:title,
+                                    :author_id,
+                                    :asset['audio']
+                                    )
+    end
 end

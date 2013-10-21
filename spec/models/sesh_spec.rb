@@ -8,8 +8,12 @@ describe Sesh do
   its(:author)  { should_not be_nil }
   it { should respond_to(:audio) }
   # Validations
-  it { should validate_presence_of(:title) }
   it { should validate_presence_of(:author) }
-  it { should validate_presence_of(:audio)}
 
+  context 'when created without a title' do
+    subject(:sesh) { create(:sesh, title: nil) }
+    it 'should default title to id' do
+      sesh.title.should match sesh.id.to_s
+    end
+  end
 end

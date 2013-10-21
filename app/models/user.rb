@@ -8,7 +8,7 @@ class User
     uniqueness: true,
     format: { with: /\A[a-zA-Z0-9]+\Z/ } # no whitespace
   slug :username
-  has_many :owned_seshes, class_name: 'Sesh', inverse_of: :author
+  has_many :seshes, class_name: 'Sesh', inverse_of: :author
 
   # Devise
   # Include default devise modules. Others available are:

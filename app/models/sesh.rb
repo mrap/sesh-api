@@ -3,8 +3,16 @@ class Sesh
   include Mongoid::Paperclip
 
   field   :title
-  belongs_to :author, class_name: 'User', inverse_of: :owned_seshes
+  belongs_to :author, class_name: 'User', inverse_of: :seshes
   has_mongoid_attached_file :audio, dependent: :destroy
+  validates_presence_of :author
 
-  validates_presence_of [:title, :author, :audio]
+  before_create :set_default_title
+
+  private
+
+    def set_default_title
+      self.title ||= self.id.to_s
+    end
+
 end

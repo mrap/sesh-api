@@ -8,7 +8,7 @@ describe User do
     it { should validate_uniqueness_of(:username) }
     its(:username)  { should_not be_nil }
     its(:slug)      { should_not be_nil }
-    it { should have_many(:owned_seshes) }
+    it { should have_many(:seshes) }
   end
 
   describe "when created with username: 'MikeRoland'" do
