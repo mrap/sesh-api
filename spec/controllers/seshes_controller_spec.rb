@@ -9,7 +9,7 @@ describe Api::V1::SeshesController do
     before { @sesh = create(:sesh) }
 
     context 'when params match valid sesh' do
-      before(:each) { get :show, id: @sesh.id }
+      before { get :show, id: @sesh.id }
       subject { response }
 
       its(:status) { should eq 200 }
@@ -24,6 +24,14 @@ describe Api::V1::SeshesController do
       end
 
       it 'should provide url to audio'
+
+    end
+
+    context 'when params do not match a valid sesh' do
+      before { get :show, id: 'a-obviously-bad-sesh-id' }
+      subject { response }
+
+      its(:status) { should eq 404 }
     end
   end
 end

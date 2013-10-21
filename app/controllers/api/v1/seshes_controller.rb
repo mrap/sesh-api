@@ -15,7 +15,11 @@ class Api::V1::SeshesController < ApplicationController
   def show
     @sesh = Sesh.find(params[:id])
 
-    expose @sesh
+    if @sesh
+      expose @sesh
+    else
+      error! :not_found
+    end
   end
 
   # POST /seshes
