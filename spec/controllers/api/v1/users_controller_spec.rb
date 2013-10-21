@@ -34,7 +34,7 @@ describe Api::V1::UsersController do
       let(:valid_user_attributes) { { username: 'roland',
                                       email:    'roland@example.com',
                                       password: 'password'  } }
-      before(:each) { post :create, user: valid_user_attributes }
+      before  { post :create, user: valid_user_attributes }
       subject { response }
 
       its(:status) { should eq 201 } # created
@@ -45,7 +45,7 @@ describe Api::V1::UsersController do
     end
 
     context 'with invalid parameters' do
-      before(:each) { post :create, user: { invalid_parameter: 'blah' } }
+      before { post :create, user: { invalid_parameter: 'blah' } }
       its(:status) { should eq 422 } # unprocessable entity
       it 'returns an invalid resource error' do
         response.should be_api_error RocketPants::InvalidResource
