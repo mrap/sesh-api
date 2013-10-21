@@ -33,4 +33,9 @@ SeshApi::Application.configure do
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
+
+  config.paperclip_defaults =
+    {
+      path: ":rails_root/public/test/:class/:attachment/:hash/:style.:extension"
+    }
 end

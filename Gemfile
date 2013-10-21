@@ -5,12 +5,15 @@ gem 'rails', '4.0.0'
 
 gem 'rails-api'
 gem 'rocket_pants', '~> 1.0'
+gem 'figaro'
 
 gem 'factory_girl_rails'
 gem 'mongoid', github: 'mrap/mongoid'
 gem 'bson_ext'
 gem 'devise'
 gem 'mongoid_slug'
+gem 'mongoid-paperclip', require: 'mongoid_paperclip'
+gem 'aws-sdk', '~> 1.3.4'
 
 # Testing
 group :test, :development do
