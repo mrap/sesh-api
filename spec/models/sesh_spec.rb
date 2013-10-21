@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe Sesh do
   before do
-    Sesh.any_instance.stub(:save_attached_files).and_return(true)
     @sesh = create(:sesh)
   end
   subject { @sesh }

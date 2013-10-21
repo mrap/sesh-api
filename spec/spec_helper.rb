@@ -17,6 +17,11 @@ RSpec.configure do |config|
   # Json Helper
   config.include Requests::JsonHelpers, type: :request
 
+  # Paperclip Helper, use like this:
+  # stub_paperclip(Model)
+  # http://www.awesomeprogrammer.com/blog/2012/08/24/stubbing-paperclip-file-upload-with-rspec/
+  config.extend PaperclipMacros
+
   # If true, the base class of anonymous controllers will be inferred
   # automatically. This will be the default behavior in future versions of
   # rspec-rails.
