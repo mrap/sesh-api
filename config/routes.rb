@@ -3,6 +3,7 @@ SeshApi::Application.routes.draw do
   api versions: 1, module: "api/v1" do
     resources :tokens, only:  [:create, :destroy]
     resources :users, except: [:new, :edit]
+    resources :seshes, except: [:new, :edit]
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
