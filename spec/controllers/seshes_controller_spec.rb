@@ -32,6 +32,7 @@ describe Api::V1::SeshesController do
       subject { response }
 
       its(:status) { should eq 404 }
+      it { should have_exposed nil }
     end
   end
 end
