@@ -4,7 +4,7 @@ describe Api::V1::SeshesController do
   default_version 1
   let(:content_body) { response.parsed_body['response'] }
 
-  describe 'fetching a sesh' do
+  describe 'GET sesh' do
     before { @sesh = create(:sesh) }
 
     context 'when params match valid sesh' do
@@ -35,7 +35,7 @@ describe Api::V1::SeshesController do
     end
   end
 
-  describe 'creating a sesh' do
+  describe 'POST seshes' do
     before do
       @user = create(:user)
       post :create,
@@ -63,6 +63,23 @@ describe Api::V1::SeshesController do
     it 'sesh should have audio' do
       @sesh = @user.seshes.first
       @sesh.audio.should_not be_nil
+    end
+  end
+
+  describe 'DELETE sesh' do
+    before { @sesh = create(:sesh) }
+
+    context 'when requesting with valid :id' do
+      before { delete :destroy, id: @sesh.id }
+      it { response.should be_successful }
+      it 'should delete the resource' do
+        Sesh.where(id: @sesh.id).exists?.should be_false
+      end
+    end
+
+    context 'when requesting with invalid :id' do
+      subject { delete :destroy, id: 'an-obviously-invalid-sesh-id' }
+      it { should be_api_error RocketPants::NotFound }
     end
   end
 end

@@ -50,9 +50,13 @@ class Api::V1::SeshesController < ApplicationController
   # DELETE /seshes/1.json
   def destroy
     @sesh = Sesh.find(params[:id])
-    @sesh.destroy
 
-    head :no_content
+    if @sesh
+      @sesh.destroy
+      head :no_content
+    else
+      error! :not_found
+    end
   end
 
   private
