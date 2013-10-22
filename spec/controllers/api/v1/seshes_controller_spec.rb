@@ -50,11 +50,16 @@ describe Api::V1::SeshesController do
     end
     subject { response }
 
-    it 'should be successful' do
+    it 'should return successful 201 status' do
       response.status.should eq 201 # created
     end
 
     it { should be_singular_resource }
+
+    it 'should return the newly created sesh' do
+      @sesh = Sesh.last
+      response.should have_exposed @sesh
+    end
 
     it '@user should have sesh' do
       @user.seshes.count.should eq 1
