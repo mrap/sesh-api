@@ -87,4 +87,24 @@ describe Api::V1::SeshesController do
       it { should be_api_error RocketPants::NotFound }
     end
   end
+
+  describe 'PUT sesh' do
+    before { @sesh = create(:sesh) }
+
+    context 'when updating the title' do
+      before  { put :update, id: @sesh.id, sesh: {title: 'New Sesh Title'}}
+      subject { response }
+
+      it { should be_successful }
+
+      it 'should update sesh title' do
+        expect(Sesh.last.title).to eq 'New Sesh Title'
+      end
+    end
+
+    context 'when requesting with invalid :id' do
+      subject { put :update, id: 'an-obviously-invalid-sesh-id' }
+      it { should be_api_error RocketPants::NotFound }
+    end
+  end
 end

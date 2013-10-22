@@ -39,10 +39,15 @@ class Api::V1::SeshesController < ApplicationController
   def update
     @sesh = Sesh.find(params[:id])
 
-    if @sesh.update(params[:sesh])
-      head :no_content
+    unless @sesh
+      error! :not_found
+      return
+    end
+
+    if @sesh.update(editable_sesh_params)
+      expose @sesh
     else
-      render json: @sesh.errors, status: :unprocessable_entity
+      expose error! :invalid_resource, @sesh.errors
     end
   end
 
@@ -66,5 +71,9 @@ class Api::V1::SeshesController < ApplicationController
                                     :author_id,
                                     :asset['audio']
                                     )
+    end
+
+    def editable_sesh_params
+      params.required(:sesh).permit(:title)
     end
 end
