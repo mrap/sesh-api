@@ -22,8 +22,10 @@ describe Api::V1::SeshesController do
         content_body['author_id'].should_not be_nil
       end
 
-      it 'should provide url to audio'
-
+      it 'should provide url audio' do
+        @assets_hash = content_body['assets']
+        @assets_hash['audio_url'].should_not be_nil
+      end
     end
 
     context 'when params do not match a valid sesh' do

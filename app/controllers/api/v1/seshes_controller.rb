@@ -16,7 +16,10 @@ class Api::V1::SeshesController < ApplicationController
     @sesh = Sesh.find(params[:id])
 
     if @sesh
-      expose @sesh
+      expose  id:         @sesh.id,
+              title:      @sesh.title,
+              author_id:  @sesh.author_id,
+              assets:     { audio_url: @sesh.audio.url }
     else
       error! :not_found
     end
