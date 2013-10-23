@@ -20,6 +20,25 @@ Example: Getting User `roland`  (version = 1):
 
     http://localhost:3000/1/users/roland
 
+## Users
+
+GET a user
+
+    method:     GET
+    url:        /users/:username
+    body:       not required
+
+    expected response:
+    {
+      info:
+        {
+          username: USERNAME
+        },
+      seshes: [ SESH_ID, SESH_ID ] # only non-anonymous sesh ids
+    }
+
+
+----------------------------------------------------------------------
 
 ## Seshes
 
