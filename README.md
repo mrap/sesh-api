@@ -25,7 +25,7 @@ Example: Getting User `roland`  (version = 1):
 Users
 -----
 
-GET a user
+#### GET a user
 
     method:     GET
     url:        /users/:username
@@ -40,7 +40,7 @@ GET a user
       seshes: [ SESH_ID, SESH_ID ] # only non-anonymous sesh ids
     }
 
-New User Sign Up
+#### New User Sign Up
 
 Requires: `username`, `email`, `password`
 
@@ -59,7 +59,7 @@ Requires: `username`, `email`, `password`
 
 ## Seshes
 
-GET a sesh
+#### GET a sesh
 
 `"author_id"` will not be returned if sesh.is_anonymous
 
@@ -68,7 +68,7 @@ GET a sesh
     body:       not required
 
 
-Creating a new sesh
+#### Creating a new sesh
 
 Requires: `author_id`, `asset['audio']`
 
@@ -83,7 +83,7 @@ Requires: `author_id`, `asset['audio']`
                   }
                 }
 
-Updating a sesh (unable to update `author` or `audio`)
+#### Updating a sesh (unable to update `author` or `audio`)
 
     method:     PUT
     url:        /seshes/[:id]
@@ -93,7 +93,7 @@ Updating a sesh (unable to update `author` or `audio`)
                   }
                 }
 
-Deleting a sesh
+#### Deleting a sesh
 
 TODO: should require token authentication to validate correct user
 
