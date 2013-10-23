@@ -1,18 +1,20 @@
-Sesh API V1
+**Sesh API V1**
 ======================================================================
-
-Returns JSON.  Requested references are returned in the `"response"` hash
-
+----------------------------------------------------------------------
 
 Usage
-======================================================================
+=====
 
 Content Type: `application/json`
 
 Body: `JSON`
 
-API Requests:
+Returns JSON.  Requested references are returned in the `"response"` hash
+
 ----------------------------------------------------------------------
+
+API Requests
+============
 ### URL format
     http://localhost:3000/:version/your-request-here
 
@@ -20,7 +22,8 @@ Example: Getting User `roland`  (version = 1):
 
     http://localhost:3000/1/users/roland
 
-## Users
+Users
+-----
 
 GET a user
 
@@ -32,10 +35,24 @@ GET a user
     {
       info:
         {
-          username: USERNAME
+          username: 'USERNAME'
         },
       seshes: [ SESH_ID, SESH_ID ] # only non-anonymous sesh ids
     }
+
+New User Sign Up
+
+Requires: `username`, `email`, `password`
+
+    method:     POST
+    url:        /users
+    body:       { user:
+                    {
+                      username: 'USERNAME',
+                      email:    'EMAIL@DOMAIN.COM',
+                      password: 'PASSWORD'
+                    }
+                }
 
 
 ----------------------------------------------------------------------
@@ -53,17 +70,18 @@ GET a sesh
 
 Creating a new sesh
 
+Requires: `author_id`, `asset['audio']`
+
     method:     POST
-    url:        /seshes/
+    url:        /seshes
     body:       { sesh:
                   {
-                    title: TITLE
+                    title: 'TITLE'
                     author_id: @user.id,
                     asset:
                       { audio: AUDIO_FILE }
                   }
                 }
-    requires:   author_id, asset['audio']
 
 Updating a sesh (unable to update `author` or `audio`)
 
@@ -71,7 +89,7 @@ Updating a sesh (unable to update `author` or `audio`)
     url:        /seshes/[:id]
     body:       { sesh:
                   {
-                    title: TITLE
+                    title: 'TITLE'
                   }
                 }
 
