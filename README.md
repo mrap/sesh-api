@@ -25,6 +25,8 @@ Example: Getting User `roland`  (version = 1):
 
 GET a sesh
 
+`"author_id"` will not be returned if sesh.is_anonymous
+
     method:     GET
     url:        /seshes/[:id]
     body:       not required
