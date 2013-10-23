@@ -49,4 +49,8 @@ class User
   ## Token authenticatable
   field :authentication_token, :type => String
 
+  def public_sesh_ids
+    self.seshes.map { |sesh| sesh.id unless sesh.is_anonymous }.compact
+  end
+
 end

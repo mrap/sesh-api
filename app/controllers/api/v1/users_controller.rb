@@ -13,10 +13,9 @@ class Api::V1::UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    @user = User.find(params[:id])
-
-    if @user
-      expose @user
+    if @user = User.find(params[:id])
+      expose  info: { username: @user.username },
+              seshes: @user.public_sesh_ids
     else
       error! :not_found
     end

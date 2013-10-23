@@ -16,4 +16,19 @@ describe User do
     its(:username)  { should match 'MikeRoland'}
     its(:slug)      { should match 'mikeroland' }
   end
+
+  describe 'getting public sesh ids (non-anonymous seshes only)' do
+    before do
+      @user = create(:user)
+      @sesh1 = create(:sesh, author_id: @user.id)
+      @sesh2 = create(:sesh, author_id: @user.id)
+      @anonymous_sesh = create(:sesh, author_id: @user.id, is_anonymous: true)
+    end
+    subject { @user }
+
+    it 'returns array of public sesh ids' do
+      @user.public_sesh_ids.should eq [@sesh1.id, @sesh2.id]
+    end
+
+  end
 end

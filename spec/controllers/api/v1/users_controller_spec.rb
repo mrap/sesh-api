@@ -11,14 +11,39 @@ describe Api::V1::UsersController do
     it { should be_collection_resource }
   end
 
-  describe 'fetching a user' do
+  describe 'GET a user' do
     let!(:user) { create(:user) }
 
     context 'with valid slug' do
-      subject { get :show, id: user.slug}
+      before  { get :show, id: user.slug }
+      subject { response }
+
       its(:status) { should eq 200 }
+
       it { should be_singular_resource }
-      it { should have_exposed user }
+
+      it "should return user's username in :info hash" do
+        @info_hash = content_body['info']
+        @info_hash['username'].should_not be_nil
+      end
+
+      context 'when user has seshes' do
+        before do
+          @sesh = create(:sesh, author_id: user.id)
+          @anonymous_sesh = create(:sesh, author_id: user.id,
+                                          is_anonymous: true)
+        end
+        before  { get :show, id: user.slug }
+        subject { response }
+
+        it 'should include all sesh ids' do
+          content_body['seshes'].to_s.should include @sesh.id
+        end
+
+        it 'should not include anonymous seshes' do
+          content_body['seshes'].to_s.should_not include @anonymous_sesh.id
+        end
+      end
     end
 
     context 'with invalid slug' do
