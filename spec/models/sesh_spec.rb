@@ -4,9 +4,11 @@ describe Sesh do
   subject(:sesh) { create(:sesh) }
 
   it { should belong_to(:author) }
-  its(:title)   { should_not be_nil }
-  its(:author)  { should_not be_nil }
+  its(:title)         { should_not be_nil }
+  its(:author)        { should_not be_nil }
+  its(:is_anonymous)  { should be_false }
   it { should respond_to(:audio) }
+
   # Validations
   it { should validate_presence_of(:author) }
 

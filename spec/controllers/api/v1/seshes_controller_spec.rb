@@ -28,6 +28,20 @@ describe Api::V1::SeshesController do
       end
     end
 
+    context 'when sesh is anonymous' do
+      before do
+        @sesh.update(is_anonymous: true)
+        get :show, id: @sesh.id
+      end
+      subject { response }
+
+      it { should be_successful }
+
+      it 'should not return a author_id' do
+        content_body['author_id'].should be_nil
+      end
+    end
+
     context 'when params do not match a valid sesh' do
       before { get :show, id: 'a-obviously-bad-sesh-id' }
       subject { response }

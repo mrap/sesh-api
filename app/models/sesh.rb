@@ -4,6 +4,7 @@ class Sesh
 
   field   :title
   belongs_to :author, class_name: 'User', inverse_of: :seshes
+  field :is_anonymous, type: Boolean, default: false
   has_mongoid_attached_file :audio, dependent: :destroy
   validates_presence_of :author
 

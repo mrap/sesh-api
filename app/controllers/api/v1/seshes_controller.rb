@@ -13,13 +13,17 @@ class Api::V1::SeshesController < ApplicationController
   # GET /seshes/1
   # GET /seshes/1.json
   def show
-    @sesh = Sesh.find(params[:id])
-
-    if @sesh
-      expose  id:         @sesh.id,
-              title:      @sesh.title,
-              author_id:  @sesh.author_id,
-              assets:     { audio_url: @sesh.audio.url }
+    if @sesh = Sesh.find(params[:id])
+      if @sesh.is_anonymous
+        expose  id:         @sesh.id,
+                title:      @sesh.title,
+                assets:     { audio_url: @sesh.audio.url }
+      else
+        expose  id:         @sesh.id,
+                title:      @sesh.title,
+                author_id:  @sesh.author_id,
+                assets:     { audio_url: @sesh.audio.url }
+      end
     else
       error! :not_found
     end
