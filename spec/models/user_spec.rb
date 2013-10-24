@@ -20,7 +20,8 @@ describe User do
     end
   end
 
-  describe 'getting public sesh ids (non-anonymous seshes only)' do
+  describe "getting user's sesh ids" do
+
     before do
       @user = create(:user)
       @sesh1 = create(:sesh, author_id: @user.id)
@@ -29,9 +30,7 @@ describe User do
     end
     subject { @user }
 
-    it 'returns array of public sesh ids' do
-      @user.public_sesh_ids.should eq [@sesh1.id, @sesh2.id]
-    end
-
+    its(:public_sesh_ids) { should eq [@sesh1.id, @sesh2.id] }
+    its(:sesh_ids)        { should eq [@sesh1.id, @sesh2.id, @anonymous_sesh.id] }
   end
 end
