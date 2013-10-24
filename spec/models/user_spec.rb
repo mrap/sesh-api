@@ -12,10 +12,12 @@ describe User do
     it { should have_many(:seshes) }
   end
 
-  describe "when created with username: 'MikeRoland'" do
+  describe ".slug" do
     subject(:user) { create(:user, username: 'MikeRoland') }
-    its(:username)  { should match 'MikeRoland'}
-    its(:slug)      { should match 'mikeroland' }
+
+    it 'sets unique slug' do
+      user.slug.should match 'mikeroland'
+    end
   end
 
   describe 'getting public sesh ids (non-anonymous seshes only)' do
