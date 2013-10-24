@@ -31,17 +31,29 @@ describe Api::V1::UsersController do
         before do
           @sesh = create(:sesh, author_id: user.id)
           @anonymous_sesh = create(:sesh, author_id: user.id,
-                                          is_anonymous: true)
-        end
-        before  { get :show, id: user.slug }
-        subject { response }
-
-        it 'should include all sesh ids' do
-          content_body['seshes'].to_s.should include @sesh.id
+            is_anonymous: true)
         end
 
-        it 'should not include anonymous seshes' do
-          content_body['seshes'].to_s.should_not include @anonymous_sesh.id
+        context 'when user is not correct_user?' do
+           before { get :show, id: user.slug }
+
+          it 'should include all sesh ids' do
+            content_body['seshes'].to_s.should include @sesh.id
+          end
+
+          it 'should not include anonymous seshes' do
+            content_body['seshes'].to_s.should_not include @anonymous_sesh.id
+          end
+        end
+
+        context 'when user is correct_user?' do
+          before do
+            get :show, id: user.slug, authentication_token: user.authentication_token
+          end
+
+          it 'should include all sesh ids' do
+            content_body['seshes'].to_s.should include @anonymous_sesh.id
+          end
         end
       end
     end

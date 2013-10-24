@@ -14,8 +14,13 @@ class Api::V1::UsersController < ApplicationController
   # GET /users/1.json
   def show
     if @user = User.find(params[:id])
-      expose  info: { username: @user.username },
-              seshes: @user.public_sesh_ids
+      if correct_user?
+        expose  info: { username: @user.username },
+                seshes: @user.sesh_ids
+      else
+        expose  info: { username: @user.username },
+                seshes: @user.public_sesh_ids
+      end
     else
       error! :not_found
     end
@@ -57,6 +62,10 @@ class Api::V1::UsersController < ApplicationController
   private
 
   def user_params
-    params.required(:user).permit(:username, :email, :password, :authentication_token)
+    params.required(:user).permit(:username, :email, :password)
+  end
+
+  def correct_user?
+    @user.authentication_token == params[:authentication_token]
   end
 end
