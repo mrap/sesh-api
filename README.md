@@ -56,7 +56,23 @@ Requires: `username`, `email`, `password`
 
 
 ----------------------------------------------------------------------
+## Auth Tokens
 
+#### Create new token for user with email: `user@example.com` and password `PASSWORD`
+
+    method:     POST
+    url:        /tokens
+    body:       Requires: 'email' and 'password'
+                {
+                  login:
+                    {
+                      email: "user@example.com",
+                      password: "PASSWORD"
+                    }
+                }
+
+
+----------------------------------------------------------------------
 ## Seshes
 
 #### GET a sesh
