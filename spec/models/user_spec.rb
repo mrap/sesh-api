@@ -6,8 +6,9 @@ describe User do
     subject { create(:user) }
     it { should validate_presence_of(:username) }
     it { should validate_uniqueness_of(:username) }
-    its(:username)  { should_not be_nil }
-    its(:slug)      { should_not be_nil }
+    its(:username)              { should_not be_nil }
+    its(:slug)                  { should_not be_nil }
+    its(:authentication_token)  { should_not be_nil }
     it { should have_many(:seshes) }
   end
 
