@@ -74,16 +74,22 @@ describe Api::V1::UsersController do
       before  { post :create, user: valid_user_attributes }
       subject { response }
 
-      its(:status) { should eq 201 } # created
-      its(:decoded_body) { should have(1).username }
+      its (:status) { should eq 200 }
+
       it 'should return the correct user' do
-        content_body['username'].should eq valid_user_attributes[:username]
+        content_body['info']['username'].should eq valid_user_attributes[:username]
+      end
+
+      it 'should return user athentication token' do
+        content_body['authentication_token'].should_not be_nil
       end
     end
 
     context 'with invalid parameters' do
       before { post :create, user: { invalid_parameter: 'blah' } }
+
       its(:status) { should eq 422 } # unprocessable entity
+
       it 'returns an invalid resource error' do
         response.should be_api_error RocketPants::InvalidResource
       end

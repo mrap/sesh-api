@@ -25,21 +25,6 @@ Example: Getting User `roland`  (version = 1):
 Users
 -----
 
-#### GET a user
-
-    method:     GET
-    url:        /users/:username
-    body:       not required
-
-    expected response:
-    {
-      info:
-        {
-          username: 'USERNAME'
-        },
-      seshes: [ SESH_ID, SESH_ID ] # only non-anonymous sesh ids
-    }
-
 #### New User Sign Up
 
     method:     POST
@@ -54,6 +39,39 @@ Users
                     }
                 }
 
+    response:   {
+                  authentication_token: NEW_AUTH_TOKEN  # save it!
+                }
+
+#### GET a user (public/unauthorized)
+
+    method:     GET
+    url:        /users/:username
+    body:       none
+    response:   {
+                  info:
+                    {
+                      username: 'USERNAME'
+                    },
+                  seshes: [ SESH_ID, SESH_ID ] # only non-anonymous sesh ids
+                }
+
+#### GET a user (private/authorized)
+
+    method:     GET
+    url:        /users/:username
+    body:       Requires "authentication_token" to access private user data and actions.
+                {
+                  authentication_token: USER_AUTH_TOKEN
+                }
+
+    response:   {
+                  info:
+                    {
+                      username: 'USERNAME'
+                    },
+                  seshes: [ SESH_ID, SESH_ID ] # all sesh ids, includes anonymous seshes
+                }
 
 ----------------------------------------------------------------------
 ## Auth Tokens

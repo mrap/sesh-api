@@ -32,7 +32,8 @@ class Api::V1::UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      expose @user, status: :created, location: @user
+      expose  info: { username: @user.username },
+              authentication_token: @user.authentication_token
     else
       error! :invalid_resource, @user.errors
     end
@@ -61,11 +62,12 @@ class Api::V1::UsersController < ApplicationController
 
   private
 
-  def user_params
-    params.required(:user).permit(:username, :email, :password)
-  end
+    def user_params
+      params.required(:user).permit(:username, :email, :password)
+    end
 
-  def correct_user?
-    @user.authentication_token == params[:authentication_token]
-  end
+    def correct_user?
+      @user.authentication_token == params[:authentication_token]
+    end
+
 end
