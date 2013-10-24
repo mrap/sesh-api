@@ -42,11 +42,11 @@ Users
 
 #### New User Sign Up
 
-Requires: `username`, `email`, `password`
-
     method:     POST
     url:        /users
-    body:       { user:
+    body:       Requires: 'username', 'email', 'password'
+                {
+                  user:
                     {
                       username: 'USERNAME',
                       email:    'EMAIL@DOMAIN.COM',
@@ -86,27 +86,30 @@ Requires: `username`, `email`, `password`
 
 #### Creating a new sesh
 
-Requires: `author_id`, `asset['audio']`
-
     method:     POST
     url:        /seshes
-    body:       { sesh:
-                  {
-                    title: 'TITLE'
-                    author_id: @user.id,
-                    asset:
-                      { audio: AUDIO_FILE }
-                  }
+    body:       Requires: 'author_id', 'asset['audio']'
+                {
+                  sesh:
+                    {
+                      title: 'TITLE',
+                      author_id: @user.id,
+                      asset:
+                        {
+                          audio: AUDIO_FILE
+                        }
+                    }
                 }
 
 #### Updating a sesh (unable to update `author` or `audio`)
 
     method:     PUT
     url:        /seshes/[:id]
-    body:       { sesh:
-                  {
-                    title: 'TITLE'
-                  }
+    body:       {
+                  sesh:
+                    {
+                      title: 'TITLE'
+                    }
                 }
 
 #### Deleting a sesh
