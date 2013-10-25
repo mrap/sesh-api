@@ -4,6 +4,7 @@ class Sesh
   include Mongoid::Paperclip
 
   scope :recent, ->{ order_by(created_at: :desc) }
+  scope :anonymous_only, ->{ where(is_anonymous: true)  }
 
   field   :title
   belongs_to :author, class_name: 'User', inverse_of: :seshes

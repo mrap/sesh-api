@@ -20,9 +20,11 @@ describe Sesh do
     end
   end
 
-  describe 'named scopes' do
+  describe 'scopes' do
     before do
       @seshes = []
+      @anonymous_sesh = create(:sesh, is_anonymous: true)
+      @seshes << @anonymous_sesh
       for i in 1..3 do
         sesh = create(:sesh)
         sesh.update(created_at: DateTime.now.advance(seconds: i))
@@ -35,5 +37,12 @@ describe Sesh do
         Sesh.recent.should eq @seshes.reverse
       end
     end
+
+    describe '.anonymous_only' do
+      it 'returns only anonymous seshes' do
+        Sesh.anonymous_only.to_a.should eq [@anonymous_sesh]
+      end
+    end
+
   end
 end
