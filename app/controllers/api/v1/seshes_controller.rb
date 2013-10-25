@@ -2,6 +2,9 @@ class Api::V1::SeshesController < ApplicationController
 
   version 1
 
+  before_action :get_sesh,            only: [:show, :update, :destroy]
+  before_action :authenticate_user!,  only: [:destroy]
+
   # GET /seshes
   # GET /seshes.json
   def index
@@ -13,19 +16,15 @@ class Api::V1::SeshesController < ApplicationController
   # GET /seshes/1
   # GET /seshes/1.json
   def show
-    if @sesh = Sesh.find(params[:id])
-      if @sesh.is_anonymous
-        expose  id:         @sesh.id,
-                title:      @sesh.title,
-                assets:     { audio_url: @sesh.audio.url }
-      else
-        expose  id:         @sesh.id,
-                title:      @sesh.title,
-                author_id:  @sesh.author_id,
-                assets:     { audio_url: @sesh.audio.url }
-      end
+    if @sesh.is_anonymous
+      expose  id:         @sesh.id,
+              title:      @sesh.title,
+              assets:     { audio_url: @sesh.audio.url }
     else
-      error! :not_found
+      expose  id:         @sesh.id,
+              title:      @sesh.title,
+              author_id:  @sesh.author_id,
+              assets:     { audio_url: @sesh.audio.url }
     end
   end
 
@@ -44,13 +43,6 @@ class Api::V1::SeshesController < ApplicationController
   # PATCH/PUT /seshes/1
   # PATCH/PUT /seshes/1.json
   def update
-    @sesh = Sesh.find(params[:id])
-
-    unless @sesh
-      error! :not_found
-      return
-    end
-
     if @sesh.update(editable_sesh_params)
       expose @sesh
     else
@@ -61,17 +53,25 @@ class Api::V1::SeshesController < ApplicationController
   # DELETE /seshes/1
   # DELETE /seshes/1.json
   def destroy
-    @sesh = Sesh.find(params[:id])
-
-    if @sesh
-      @sesh.destroy
-      head :no_content
-    else
-      error! :not_found
-    end
+    @sesh.destroy
+    head :no_content
   end
 
   private
+
+    def get_sesh
+      if @sesh = Sesh.find(params[:id])
+        @sesh
+      else
+        error! :not_found
+      end
+    end
+
+    def authenticate_user!
+      if params[:authentication_token] != @sesh.author.authentication_token
+        error! :unauthenticated
+      end
+    end
 
     def new_sesh_params
       params.required(:sesh).permit(:title,

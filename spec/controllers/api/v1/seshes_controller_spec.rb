@@ -63,17 +63,18 @@ describe Api::V1::SeshesController do
               }
           }
         }
+      @sesh = @user.seshes.last
     end
+
     subject { response }
 
-    it 'should return successful 201 status' do
+    it 'returns 201 status code' do
       response.status.should eq 201 # created
     end
 
     it { should be_singular_resource }
 
-    it 'should return the newly created sesh' do
-      @sesh = Sesh.last
+    it 'returns the newly created sesh' do
       response.should have_exposed @sesh
     end
 
@@ -81,8 +82,7 @@ describe Api::V1::SeshesController do
       @user.seshes.count.should eq 1
     end
 
-    it 'sesh should have audio' do
-      @sesh = @user.seshes.first
+    it 'has audio' do
       @sesh.audio.should_not be_nil
     end
   end
@@ -90,17 +90,31 @@ describe Api::V1::SeshesController do
   describe 'DELETE sesh' do
     before { @sesh = create(:sesh) }
 
-    context 'when requesting with valid :id' do
-      before { delete :destroy, id: @sesh.id }
-      it { response.should be_successful }
-      it 'should delete the resource' do
-        Sesh.where(id: @sesh.id).exists?.should be_false
+    context 'when sending valid authentication_token (authorized user)' do
+      before do
+        @user = @sesh.author
+        delete :destroy, id: @sesh.id,
+          authentication_token: @user.authentication_token
+      end
+
+      context 'when requesting with valid :id' do
+        it { response.should be_successful }
+        it 'should delete the resource' do
+          Sesh.where(id: @sesh.id).exists?.should be_false
+        end
+      end
+
+      context 'when requesting with invalid :id' do
+        subject { delete :destroy, id: 'an-obviously-invalid-sesh-id' }
+        it { should be_api_error RocketPants::NotFound }
       end
     end
 
-    context 'when requesting with invalid :id' do
-      subject { delete :destroy, id: 'an-obviously-invalid-sesh-id' }
-      it { should be_api_error RocketPants::NotFound }
+    context 'when no valid authorization_token presented' do
+      before { delete :destroy, id: @sesh.id }
+      it 'returns 401 status code (unauthorized)' do
+        response.status.should eq 401
+      end
     end
   end
 
