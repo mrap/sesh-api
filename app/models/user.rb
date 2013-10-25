@@ -3,7 +3,8 @@ class User
   include Mongoid::Slug
 
   # Relations
-  has_many :seshes, class_name: 'Sesh', inverse_of: :author
+  has_many :seshes, class_name: 'Sesh', inverse_of: :author, dependent: :destroy
+  has_many :favorites,  as: :favoriter, dependent: :destroy
 
   # Fields
   field :username

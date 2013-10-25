@@ -9,6 +9,7 @@ describe Sesh do
   its(:is_anonymous)  { should be_false }
   it { should respond_to(:audio) }
   its(:created_at)    { should_not be_nil }
+  it { should have_many :favorites }
 
   # Validations
   it { should validate_presence_of(:author) }

@@ -9,7 +9,8 @@ describe User do
     its(:username)              { should_not be_nil }
     its(:slug)                  { should_not be_nil }
     its(:authentication_token)  { should_not be_nil }
-    it { should have_many(:seshes) }
+    it { should have_many(:seshes).with_dependent(:destroy) }
+    it { should have_many(:favorites).with_dependent(:destroy) }
   end
 
   describe ".slug" do

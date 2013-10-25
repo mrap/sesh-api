@@ -4,7 +4,8 @@ class Sesh
   include Mongoid::Paperclip
 
   # Relations
-  belongs_to :author, class_name: 'User', inverse_of: :seshes
+  belongs_to :author,   class_name: 'User', inverse_of: :seshes
+  has_many :favorites,  as: :favorited
 
   # Fields
   field :title,         type: String
