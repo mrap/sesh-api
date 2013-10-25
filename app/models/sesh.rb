@@ -1,6 +1,9 @@
 class Sesh
   include Mongoid::Document
+  include Mongoid::Timestamps
   include Mongoid::Paperclip
+
+  scope :recent, ->{ order_by(created_at: :desc) }
 
   field   :title
   belongs_to :author, class_name: 'User', inverse_of: :seshes
