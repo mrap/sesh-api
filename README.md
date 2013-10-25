@@ -16,124 +16,155 @@ Returns JSON.  Requested references are returned in the `"response"` hash
 API Requests
 ============
 ### URL format
-    http://localhost:3000/:version/your-request-here
 
-Example: Getting User `roland`  (version = 1):
+    METHOD http://localhost:3000/:version/your-request-here
 
-    http://localhost:3000/1/users/roland
+### Example Request: Creating a User `foo`  (version = 1):
+
+URL
+
+    POST http://localhost:3000/1/users
+
+Body
+
+    {
+      user:
+        {
+          username: 'foo',
+          email: 'foo@example.com'
+          password: 'very-secure-password'
+        }
+    }
+
+Response
+
+    {
+      authentication_token: '4wYPA4d-ay6Vt8ah5sHz'
+    }
+
+
+
+### **NOTE:** `Body` and `Response` are hashes
+The beginning `{` and ending `}` are implied in the following documentation for readability purposes.
 
 Users
 -----
 
 #### New User Sign Up
 
-    method:     POST
-    url:        /users
-    body:       Requires: 'username', 'email', 'password'
-                {
-                  user:
-                    {
-                      username: 'USERNAME',
-                      email:    'EMAIL@DOMAIN.COM',
-                      password: 'PASSWORD'
-                    }
-                }
+URL
 
-    response:   {
-                  authentication_token: NEW_AUTH_TOKEN  # save it!
-                }
+    POST /users
+
+Body (requires `username` `email` `password`)
+
+    user:
+      {
+        username: 'USERNAME',
+        email:    'EMAIL@DOMAIN.COM',
+        password: 'PASSWORD'
+      }
+
+Response
+
+    authentication_token: NEW_AUTH_TOKEN  # save it!
 
 #### GET a user (public/unauthorized)
 
-    method:     GET
-    url:        /users/:username
-    body:       none
-    response:   {
-                  info:
-                    {
-                      username: 'USERNAME'
-                    },
-                  seshes: [ SESH_ID, SESH_ID ] # only non-anonymous sesh ids
-                }
+URL
+
+    GET /users/:username
+
+Response
+
+    info:
+      {
+        username: 'USERNAME'
+      },
+    seshes: [ SESH_ID, SESH_ID ] # only non-anonymous sesh ids
 
 #### GET a user (private/authorized)
 
-    method:     GET
-    url:        /users/:username
-    body:       Requires "authentication_token" to access private user data and actions.
-                {
-                  authentication_token: USER_AUTH_TOKEN
-                }
+URL
 
-    response:   {
-                  info:
-                    {
-                      username: 'USERNAME'
-                    },
-                  seshes: [ SESH_ID, SESH_ID ] # all sesh ids, includes anonymous seshes
-                }
+    GET /users/:username
+
+Body (requires `authentication_token` to access private user data and actions)
+
+    authentication_token: USER_AUTH_TOKEN
+
+Response
+
+    info:
+      {
+        username: 'USERNAME'
+      },
+    seshes: [ SESH_ID, SESH_ID ] # all sesh ids, includes anonymous seshes
 
 ----------------------------------------------------------------------
 ## Auth Tokens
 
-#### Create new token for user with email: `user@example.com` and password `PASSWORD`
+#### Create new token for existing user
 
-    method:     POST
-    url:        /tokens
-    body:       Requires: 'email' and 'password'
-                {
-                  login:
-                    {
-                      email: "user@example.com",
-                      password: "PASSWORD"
-                    }
-                }
+URL
 
+    POST /tokens
+
+Body (requires `login['email']` and `login['password']`)
+
+    login:
+      {
+        email: "foo@example.com",
+        password: "a-very-secure-password"
+      }
 
 ----------------------------------------------------------------------
+
 ## Seshes
 
 #### GET a sesh
 
+URL
+
+    GET /seshes/:sesh_id
+
 `"author_id"` will not be returned if sesh.is_anonymous
-
-    method:     GET
-    url:        /seshes/[:id]
-    body:       not required
-
 
 #### Creating a new sesh
 
-    method:     POST
-    url:        /seshes
-    body:       Requires: 'author_id', 'asset['audio']'
-                {
-                  sesh:
-                    {
-                      title: 'TITLE',
-                      author_id: @user.id,
-                      asset:
-                        {
-                          audio: AUDIO_FILE
-                        }
-                    }
-                }
+URL
 
-#### Updating a sesh (unable to update `author` or `audio`)
+    POST /seshes
 
-    method:     PUT
-    url:        /seshes/[:id]
-    body:       {
-                  sesh:
-                    {
-                      title: 'TITLE'
-                    }
-                }
+Body (requires `author_id` and  `asset['audio']`)
+
+    sesh:
+      {
+        title: 'TITLE',       # defaults to sesh.id
+        author_id: @user.id,
+        asset:
+          {
+            audio: AUDIO_FILE
+          }
+      }
+
+#### Updating a sesh
+
+URL
+
+    PUT /seshes/:sesh_id
+
+Body (`author` and `audio` cannot be updated)
+
+    sesh:
+      {
+        title: 'TITLE'
+      }
 
 #### Deleting a sesh
 
 TODO: should require token authentication to validate correct user
 
-    method:     DELETE
-    url:        /seshes/[:id]
-    body:       not required
+URL
+
+    DELETE /seshes/:id
