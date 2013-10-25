@@ -2,13 +2,18 @@ class User
   include Mongoid::Document
   include Mongoid::Slug
 
+  # Relations
+  has_many :seshes, class_name: 'Sesh', inverse_of: :author
+
+  # Fields
   field :username
+  slug  :username
+
+  # Validations
   validates :username,
     presence: true,
     uniqueness: true,
     format: { with: /\A[a-zA-Z0-9]+\Z/ } # no whitespace
-  slug :username
-  has_many :seshes, class_name: 'Sesh', inverse_of: :author
 
   # Devise
   # Include default devise modules. Others available are:
