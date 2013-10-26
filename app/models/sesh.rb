@@ -5,7 +5,7 @@ class Sesh
 
   # Relations
   belongs_to :author,   class_name: 'User', inverse_of: :seshes
-  has_many :favorites,  as: :favorited
+  has_many :favorites, dependent: :destroy
 
   # Fields
   field :title,         type: String
@@ -18,8 +18,9 @@ class Sesh
   validates_presence_of :author
 
   # Named Scopes
-  default_scope ->{ order_by(created_at: :desc) } # newest first
+  scope :recent, ->{ order_by(created_at: :desc) } # newest first
   scope :anonymous_only, ->{ where(is_anonymous: true)  }
+  scope :most_favorited, ->{ order_by(favorites_count: :desc) }
 
   before_create :set_default_title
 

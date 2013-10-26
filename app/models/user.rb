@@ -4,7 +4,7 @@ class User
 
   # Relations
   has_many :seshes, class_name: 'Sesh', inverse_of: :author, dependent: :destroy
-  has_many :favorites,  as: :favoriter, dependent: :destroy
+  has_many :favorites, dependent: :destroy
 
   # Fields
   field :username

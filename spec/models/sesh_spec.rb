@@ -33,15 +33,32 @@ describe Sesh do
       end
     end
 
-    describe 'default_scope' do
+    describe '.recent' do
       it 'sorts sesh order from newest to oldest' do
-        Sesh.all.to_a.should eq @seshes.reverse
+        Sesh.recent.to_a.should eq @seshes.reverse
       end
     end
 
     describe '.anonymous_only' do
       it 'returns only anonymous seshes' do
         Sesh.anonymous_only.to_a.should eq [@anonymous_sesh]
+      end
+    end
+
+    describe '.most_favorited' do
+      before do
+        @user   = create(:user)
+        @user2  = create(:user)
+        @most_favorited_sesh = @seshes.last
+        @second_most_favorited_sesh = @seshes.first
+        create(:favorite, favoriter: @user, favorited: @most_favorited_sesh)
+        create(:favorite, favoriter: @user2, favorited: @most_favorited_sesh)
+        create(:favorite, favoriter: @user, favorited: @second_most_favorited_sesh)
+      end
+
+      it 'orders by most favorited first' do
+        Sesh.most_favorited.first.should eq @most_favorited_sesh
+        Sesh.most_favorited[1].should eq @second_most_favorited_sesh
       end
     end
 
