@@ -2,6 +2,8 @@ class Api::V1::UsersController < ApplicationController
 
   version 1
 
+  before_action :get_user, only: [:show, :update, :destroy]
+
   # GET /users
   # GET /users.json
   def index
@@ -13,16 +15,12 @@ class Api::V1::UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    if @user = User.find(params[:id])
-      if correct_user?
-        expose  info: { username: @user.username },
-                seshes: @user.sesh_ids
-      else
-        expose  info: { username: @user.username },
-                seshes: @user.public_sesh_ids
-      end
+    if correct_user?
+      expose  info: { username: @user.username },
+              seshes: @user.sesh_ids
     else
-      error! :not_found
+      expose  info: { username: @user.username },
+              seshes: @user.public_sesh_ids
     end
   end
 
@@ -42,8 +40,6 @@ class Api::V1::UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    @user = User.find(params[:id])
-
     if @user.update(params[:user])
       head :no_content
     else
@@ -54,13 +50,19 @@ class Api::V1::UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user = User.find(params[:id])
     @user.destroy
-
     head :no_content
   end
 
   private
+
+    def get_user
+      if @user = User.find(params[:id])
+        @user
+      else
+        error! :not_found
+      end
+    end
 
     def user_params
       params.required(:user).permit(:username, :email, :password)
