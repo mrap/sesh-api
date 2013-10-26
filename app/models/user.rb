@@ -56,6 +56,12 @@ class User
   field :authentication_token, :type => String
   after_initialize :ensure_authentication_token!
 
+  def favorite_sesh(sesh)
+    if sesh.is_a?(Sesh)
+      Favorite.create!(favoriter: self, favorited: sesh)
+    end
+  end
+
   def public_sesh_ids
     self.seshes.map { |sesh| sesh.id unless sesh.is_anonymous }.compact
   end
