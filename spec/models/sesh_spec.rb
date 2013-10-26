@@ -33,9 +33,9 @@ describe Sesh do
       end
     end
 
-    describe '.recent' do
+    describe 'default_scope' do
       it 'sorts sesh order from newest to oldest' do
-        Sesh.recent.should eq @seshes.reverse
+        Sesh.all.to_a.should eq @seshes.reverse
       end
     end
 

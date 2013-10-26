@@ -18,7 +18,7 @@ class Sesh
   validates_presence_of :author
 
   # Named Scopes
-  scope :recent, ->{ order_by(created_at: :desc) }
+  default_scope ->{ order_by(created_at: :desc) } # newest first
   scope :anonymous_only, ->{ where(is_anonymous: true)  }
 
   before_create :set_default_title
