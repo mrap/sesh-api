@@ -122,7 +122,12 @@ describe Api::V1::SeshesController do
     before { @sesh = create(:sesh) }
 
     context 'when updating the title' do
-      before  { put :update, id: @sesh.id, sesh: {title: 'New Sesh Title'}}
+      before do
+        put :update, id: @sesh.id,
+          sesh: { title: 'New Sesh Title' },
+          authentication_token: @sesh.author.authentication_token
+      end
+
       subject { response }
 
       it { should be_successful }
@@ -135,6 +140,18 @@ describe Api::V1::SeshesController do
     context 'when requesting with invalid :id' do
       subject { put :update, id: 'an-obviously-invalid-sesh-id' }
       it { should be_api_error RocketPants::NotFound }
+    end
+
+    context 'when no valid authorization_token presented' do
+      before do
+        put :update, id: @sesh.id,
+          sesh: {title: 'New Sesh Title'}
+      end
+      subject { response }
+
+      it 'returns a 401 status code (Unauthorized)' do
+        response.status.should eq 401
+      end
     end
   end
 end

@@ -3,7 +3,7 @@ class Api::V1::SeshesController < ApplicationController
   version 1
 
   before_action :get_sesh,            only: [:show, :update, :destroy]
-  before_action :authenticate_user!,  only: [:destroy]
+  before_action :authenticate_user!,  only: [:update, :destroy]
 
   # GET /seshes
   # GET /seshes.json
