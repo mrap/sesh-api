@@ -32,6 +32,7 @@ class Api::V1::SeshesController < ApplicationController
   # POST /seshes.json
   def create
     @sesh = Sesh.new(new_sesh_params)
+    authenticate_user!
 
     if @sesh.save
       expose @sesh, status: :created, location: @sesh

@@ -52,38 +52,66 @@ describe Api::V1::SeshesController do
   end
 
   describe 'POST seshes' do
-    before do
-      @user = create(:user)
-      post :create,
-        { sesh:
-          { author_id: @user.id,
-            asset:
-              {
-                audio: File.new(Rails.root + 'spec/factories/paperclip/test_audio.mp3')
-              }
+    before { @user = create(:user) }
+
+    context "when authentication_token does not match author.authentication_token" do
+      before do
+        post :create,
+          { sesh:
+            { author_id: @user.id,
+              asset:
+                {
+                  audio: File.new(Rails.root + 'spec/factories/paperclip/test_audio.mp3')
+                }
+            }
           }
-        }
-      @sesh = @user.seshes.last
+        @sesh = @user.seshes.last
+      end
+
+      it 'should have a 401 status (Unauthorized)' do
+        response.status.should eq 401
+      end
+
+      it 'should have not created a new sesh' do
+        Sesh.where(author: @user).exists?.should be_false
+      end
     end
 
-    subject { response }
+    context 'when valid authentication_token present' do
+      before do
+        post :create, authentication_token: @user.authentication_token,
+            sesh:
+              {
+                author_id: @user.id,
+                asset: { audio: File.new(Rails.root + 'spec/factories/paperclip/test_audio.mp3') }
+              }
+        @sesh = @user.seshes.last
+      end
 
-    it 'returns 201 status code' do
-      response.status.should eq 201 # created
-    end
 
-    it { should be_singular_resource }
+      it 'returns 201 status code' do
+        response.status.should eq 201 # created
+      end
 
-    it 'returns the newly created sesh' do
-      response.should have_exposed @sesh
-    end
+      it 'should be a singular resource' do
+        response.should be_singular_resource
+      end
 
-    it '@user should have sesh' do
-      @user.seshes.count.should eq 1
-    end
+      it 'successfully creates the sesh' do
+        Sesh.where(author: @user).exists?.should be_true
+      end
 
-    it 'has audio' do
-      @sesh.audio.should_not be_nil
+      it 'returns the newly created sesh' do
+        response.should have_exposed @sesh
+      end
+
+      it '@user should have sesh' do
+        @user.seshes.count.should eq 1
+      end
+
+      it 'has audio' do
+        @sesh.audio.should_not be_nil
+      end
     end
   end
 
@@ -110,7 +138,7 @@ describe Api::V1::SeshesController do
       end
     end
 
-    context 'when no valid authorization_token presented' do
+    context 'when no valid authentication_token presented' do
       before { delete :destroy, id: @sesh.id }
       it 'returns 401 status code (unauthorized)' do
         response.status.should eq 401
@@ -142,7 +170,7 @@ describe Api::V1::SeshesController do
       it { should be_api_error RocketPants::NotFound }
     end
 
-    context 'when no valid authorization_token presented' do
+    context 'when no valid authentication_token presented' do
       before do
         put :update, id: @sesh.id,
           sesh: {title: 'New Sesh Title'}
