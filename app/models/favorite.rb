@@ -6,5 +6,6 @@ class Favorite
   belongs_to :favorited, class_name: 'Sesh', counter_cache: true
 
   validates_presence_of :favoriter, :favorited
+  validates_uniqueness_of :favorited, :scope => :favoriter
 
 end
