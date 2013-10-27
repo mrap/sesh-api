@@ -168,3 +168,17 @@ TODO: should require token authentication to validate correct user
 URL
 
     DELETE /seshes/:id
+
+#### Favoriting a sesh
+
+URL
+
+    PUT /seshes/:id/favorite
+
+Body
+
+    favoriter_authentication_token: AUTH_TOKEN_OF_USER_FAVORITING
+
+Response
+
+    # same as seshes#show

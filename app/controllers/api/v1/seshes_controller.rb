@@ -2,8 +2,8 @@ class Api::V1::SeshesController < ApplicationController
 
   version 1
 
-  before_action :get_sesh,            only: [:show, :update, :destroy]
-  before_action :authenticate_user!,  only: [:update, :destroy]
+  before_action :get_sesh,            only: [:show, :update, :destroy, :favorite]
+  before_action :authenticate_author!,  only: [:update, :destroy]
 
   # GET /seshes
   # GET /seshes.json
@@ -16,23 +16,14 @@ class Api::V1::SeshesController < ApplicationController
   # GET /seshes/1
   # GET /seshes/1.json
   def show
-    if @sesh.is_anonymous
-      expose  id:         @sesh.id,
-              title:      @sesh.title,
-              assets:     { audio_url: @sesh.audio.url }
-    else
-      expose  id:         @sesh.id,
-              title:      @sesh.title,
-              author_id:  @sesh.author_id,
-              assets:     { audio_url: @sesh.audio.url }
-    end
+    expose_sesh
   end
 
   # POST /seshes
   # POST /seshes.json
   def create
     @sesh = Sesh.new(new_sesh_params)
-    authenticate_user!
+    authenticate_author!
 
     if @sesh.save
       expose @sesh, status: :created, location: @sesh
@@ -58,6 +49,15 @@ class Api::V1::SeshesController < ApplicationController
     head :no_content
   end
 
+  def favorite
+    if @favoriter = User.find_by(authentication_token: params[:favoriter_authentication_token])
+      @favoriter.favorite_sesh(@sesh)
+      expose_sesh
+    else
+      error! :unauthenticated
+    end
+  end
+
   private
 
     def get_sesh
@@ -68,7 +68,20 @@ class Api::V1::SeshesController < ApplicationController
       end
     end
 
-    def authenticate_user!
+    def expose_sesh
+      if @sesh.is_anonymous
+      expose  id:         @sesh.id,
+              title:      @sesh.title,
+              assets:     { audio_url: @sesh.audio.url }
+      else
+        expose  id:         @sesh.id,
+                title:      @sesh.title,
+                author_id:  @sesh.author_id,
+                assets:     { audio_url: @sesh.audio.url }
+      end
+    end
+
+    def authenticate_author!
       if params[:authentication_token] != @sesh.author.authentication_token
         error! :unauthenticated
       end

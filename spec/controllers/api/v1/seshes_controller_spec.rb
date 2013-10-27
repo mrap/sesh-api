@@ -182,4 +182,36 @@ describe Api::V1::SeshesController do
       end
     end
   end
+
+  describe 'favoriting a sesh' do
+    before do
+      @user = create(:user)
+      @sesh = create(:sesh)
+    end
+
+    context 'when correct authentication token presented' do
+      before do
+        put :favorite,  id: @sesh,
+                        favoriter_authentication_token: @user.authentication_token
+      end
+
+      it 'should be successful' do
+        response.status.should eq 200
+      end
+
+      it 'should expose the favorited sesh' do
+        content_body['title'].should eq @sesh.title
+      end
+    end
+
+    context 'when nil/invalid authentication_token sent' do
+      before do
+        put :favorite,  id: @sesh
+      end
+
+      it 'should return with 401 code (unauthorized)' do
+        response.status.should eq 401
+      end
+    end
+  end
 end
