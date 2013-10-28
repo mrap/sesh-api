@@ -5,56 +5,56 @@ describe Api::V1::UsersController do
 
   let(:content_body) { response.parsed_body['response'] }
 
-  describe 'fetching a list of users' do
-    before { 10.times { create(:user) } }
-    subject { get :index }
-    it { should be_collection_resource }
-  end
-
   describe 'GET a user' do
-    let!(:user) { create(:user) }
+    before do
+      @user = create(:user)
+      @sesh = create(:sesh, author_id: @user.id)
+      @anonymous_sesh = create(:sesh, author_id: @user.id,
+        is_anonymous: true)
+    end
 
-    context 'with valid slug' do
-      before  { get :show, id: user.slug }
-      subject { response }
+    context 'when requested with valid authentication_token' do
+      before { get :show, id: @user.slug, authentication_token: @user.authentication_token }
 
-      its(:status) { should eq 200 }
-
-      it { should be_singular_resource }
-
-      it "should return user's username in :info hash" do
-        @info_hash = content_body['info']
-        @info_hash['username'].should_not be_nil
+      it 'is successful' do
+        response.status.should eq 200
       end
 
-      context 'when user has seshes' do
-        before do
-          @sesh = create(:sesh, author_id: user.id)
-          @anonymous_sesh = create(:sesh, author_id: user.id,
-            is_anonymous: true)
-        end
+      it 'exposes singular resource of @user' do
+        response.should be_singular_resource
+      end
 
-        context 'when user is not correct_user?' do
-           before { get :show, id: user.slug }
+      it 'exposes info hash' do
+        content_body['info']['username'].should match @user.username
+      end
 
-          it 'should include all sesh ids' do
-            content_body['seshes'].to_s.should include @sesh.id
-          end
+      it "exposes all user's seshes (including anonymous seshes)" do
+        content_body['seshes'].to_s.should include @sesh.id
+        content_body['seshes'].to_s.should include @anonymous_sesh.id
+      end
+    end
 
-          it 'should not include anonymous seshes' do
-            content_body['seshes'].to_s.should_not include @anonymous_sesh.id
-          end
-        end
+    context 'when requested without a valid authentication_token' do
+      before { get :show, id: @user.slug }
 
-        context 'when user is correct_user?' do
-          before do
-            get :show, id: user.slug, authentication_token: user.authentication_token
-          end
+      it 'is successful' do
+        response.status.should eq 200
+      end
 
-          it 'should include all sesh ids' do
-            content_body['seshes'].to_s.should include @anonymous_sesh.id
-          end
-        end
+      it 'exposes singular resource of @user' do
+        response.should be_singular_resource
+      end
+
+      it 'exposes info hash' do
+        content_body['info']['username'].should match @user.username
+      end
+
+      it "exposes public sesh id's" do
+        content_body['seshes'].to_s.should include @sesh.id
+      end
+
+      it 'does not expose anonymous seshes' do
+        content_body['seshes'].to_s.should_not include @anonymous_sesh.id
       end
     end
 
