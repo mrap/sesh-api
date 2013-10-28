@@ -10,7 +10,7 @@ describe User do
   its(:slug)                  { should_not be_nil }
   its(:authentication_token)  { should_not be_nil }
   it { should have_many(:seshes).with_dependent(:destroy) }
-  it { should have_many(:favorites).with_dependent(:destroy) }
+  it { should have_and_belong_to_many(:favorite_seshes) }
 
   describe ".slug" do
     subject(:user) { create(:user, username: 'MikeRoland') }
@@ -30,15 +30,17 @@ describe User do
     end
     subject { @user }
 
-    its(:public_sesh_ids) { should eq [@sesh1.id, @sesh2.id] }
-    its(:sesh_ids)        { should eq [@sesh1.id, @sesh2.id, @anonymous_sesh.id] }
+    it '.public_seshes' do
+      @user.public_seshes.to_a.should include @sesh1
+      @user.public_seshes.to_a.should_not include @anonymous_sesh
+    end
   end
 
   describe 'favoriting a sesh' do
     before { @sesh = create(:sesh) }
 
     it '.favorite_sesh()' do
-      expect{ user.favorite_sesh(@sesh) }.to change{ user.favorites.count }.by(1)
+      expect{ user.add_sesh_to_favorites(@sesh) }.to change{ user.favorite_seshes.count }.by(1)
     end
   end
 end

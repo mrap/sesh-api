@@ -4,7 +4,7 @@ class User
 
   # Relations
   has_many :seshes, class_name: 'Sesh', inverse_of: :author, dependent: :destroy
-  has_many :favorites, dependent: :destroy
+  has_and_belongs_to_many :favorite_seshes, class_name: 'Sesh', inverse_of: :favoriters
 
   # Fields
   field :username
@@ -56,14 +56,15 @@ class User
   field :authentication_token, :type => String
   after_initialize :ensure_authentication_token!
 
-  def favorite_sesh(sesh)
+  def add_sesh_to_favorites(sesh)
     if sesh.is_a?(Sesh)
-      Favorite.create!(favoriter: self, favorited: sesh)
+      self.favorite_seshes << sesh
     end
   end
 
-  def public_sesh_ids
-    self.seshes.map { |sesh| sesh.id unless sesh.is_anonymous }.compact
+  def public_seshes
+    self.seshes.where(is_anonymous: false)
+    # self.seshes.map { |sesh| sesh.id unless sesh.is_anonymous }.compact
   end
 
 end

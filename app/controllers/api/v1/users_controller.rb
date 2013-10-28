@@ -17,10 +17,10 @@ class Api::V1::UsersController < ApplicationController
   def show
     if correct_user?
       expose  info: { username: @user.username },
-              seshes: @user.sesh_ids
+              seshes: @user.seshes
     else
       expose  info: { username: @user.username },
-              seshes: @user.public_sesh_ids
+              seshes: @user.public_seshes
     end
   end
 

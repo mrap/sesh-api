@@ -9,7 +9,7 @@ describe Sesh do
   its(:is_anonymous)  { should be_false }
   it { should respond_to(:audio) }
   its(:created_at)    { should_not be_nil }
-  it { should have_many :favorites }
+  it { should have_and_belong_to_many :favoriters }
 
   # Validations
   it { should validate_presence_of(:author) }
@@ -51,9 +51,9 @@ describe Sesh do
         @user2  = create(:user)
         @most_favorited_sesh = @seshes.last
         @second_most_favorited_sesh = @seshes.first
-        create(:favorite, favoriter: @user, favorited: @most_favorited_sesh)
-        create(:favorite, favoriter: @user2, favorited: @most_favorited_sesh)
-        create(:favorite, favoriter: @user, favorited: @second_most_favorited_sesh)
+        @user.add_sesh_to_favorites(@most_favorited_sesh)
+        @user2.add_sesh_to_favorites(@most_favorited_sesh)
+        @user2.add_sesh_to_favorites(@second_most_favorited_sesh)
       end
 
       it 'orders by most favorited first' do

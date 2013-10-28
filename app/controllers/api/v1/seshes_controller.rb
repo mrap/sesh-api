@@ -51,7 +51,7 @@ class Api::V1::SeshesController < ApplicationController
 
   def favorite
     if @favoriter = User.find_by(authentication_token: params[:favoriter_authentication_token])
-      @favoriter.favorite_sesh(@sesh)
+      @favoriter.add_sesh_to_favorites(@sesh)
       expose_sesh
     else
       error! :unauthenticated
