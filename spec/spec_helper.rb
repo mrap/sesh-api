@@ -10,10 +10,6 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 RSpec.configure do |config|
 
-  # Rocket Pants Matchers
-  config.include RocketPants::TestHelper,    type: :controller
-  config.include RocketPants::RSpecMatchers, type: :controller
-
   # Json Helper
   config.include Requests::JsonHelpers, type: :request
 

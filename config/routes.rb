@@ -1,10 +1,12 @@
 SeshApi::Application.routes.draw do
 
-  api versions: 1, module: "api/v1" do
-    resources :tokens, only:  [:create, :destroy]
-    resources :users, except: [:new, :edit]
-    resources :seshes, except: [:new, :edit] do
-      put :favorite, on: :member
+  namespace :api, defaults: { format: 'json' } do
+    namespace :v1 do
+      resources :tokens, only:  [:create, :destroy]
+      resources :users, except: [:new, :edit]
+      resources :seshes, except: [:new, :edit] do
+        put :favorite, on: :member
+      end
     end
   end
 
