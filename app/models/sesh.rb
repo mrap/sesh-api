@@ -26,11 +26,11 @@ class Sesh
   before_create :set_default_title
   before_save   :refresh_favoriters_count
 
-  def refresh_favoriters_count
-    self.favoriters_count = self.favoriters.count
-  end
-
   private
+
+    def refresh_favoriters_count
+      self.favoriters_count = self.favoriters.count
+    end
 
     def set_default_title
       self.title ||= self.id.to_s
