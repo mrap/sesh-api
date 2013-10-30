@@ -38,8 +38,8 @@ describe 'GET sesh' do
       get '/api/v1/seshes/a-bad-sesh-id'
     end
 
-    it 'returns not found' do
-      json['status'].should eq 404
+    it 'returns json with error' do
+      json['error']['status'].should eq 404
     end
 
     it 'does not expose any sesh' do

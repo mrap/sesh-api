@@ -21,12 +21,12 @@ class Api::V1::SeshesController < ApplicationController
   # POST /seshes.json
   def create
     @sesh = Sesh.new(new_sesh_params)
-    authenticate_author!
+    return unless authenticate_author!
 
-    if @sesh.save
-      @sesh
+    if  @sesh.save
+      render status: :created
     else
-      render status: :invalid_resource
+      render nothing: true, status: :invalid_resource
     end
   end
 
@@ -34,7 +34,6 @@ class Api::V1::SeshesController < ApplicationController
   # PATCH/PUT /seshes/1.json
   def update
     if @sesh.update(editable_sesh_params)
-      @sesh
       render status: 202
     else
       render status: :invalid_resource
@@ -45,7 +44,7 @@ class Api::V1::SeshesController < ApplicationController
   # DELETE /seshes/1.json
   def destroy
     @sesh.destroy
-    head :no_content
+    render status: 202
   end
 
   def favorite
@@ -60,20 +59,18 @@ class Api::V1::SeshesController < ApplicationController
   private
 
     def get_sesh
-      if @sesh = Sesh.find(params[:id])
-        @sesh
-      else
-        render json: { error: { status: 404,
-                                message: "No sesh with #{params[:id]} found." } },
-        status: :not_found
+      unless @sesh = Sesh.find(params[:id])
+        render nothing: true, status: :not_found
+        return false
       end
     end
 
     def authenticate_author!
       unless params[:auth_token] == @sesh.author.authentication_token
-        render json: { error: { status: 401,
-                                message: "Unauthorized" } },
-        status: :unauthorized
+        render nothing: true, status: :unauthorized
+        return false
+      else
+        return true
       end
     end
 
