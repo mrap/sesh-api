@@ -14,6 +14,10 @@ describe "GET a user" do
     response.status.should eq 200
   end
 
+  it 'exposes user id' do
+    json['id']['$oid'].should match @user.id
+  end
+
   it 'exposes correct user info' do
     @info = json['info']
     @info['username'].should match @user.username

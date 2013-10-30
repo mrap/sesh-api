@@ -1,3 +1,5 @@
+json.id             @user.id
+
 json.info do |info|
   info.username     @user.username
 end
