@@ -34,7 +34,7 @@ class Api::V1::SeshesController < ApplicationController
   # PATCH/PUT /seshes/1.json
   def update
     if @sesh.update(editable_sesh_params)
-      render status: 202
+      render status: :accepted
     else
       render status: :invalid_resource
     end
@@ -44,13 +44,13 @@ class Api::V1::SeshesController < ApplicationController
   # DELETE /seshes/1.json
   def destroy
     @sesh.destroy
-    render status: 202
+    render status: :accepted
   end
 
   def favorite
     if @favoriter = User.find_by(authentication_token: params[:favoriter_authentication_token])
       @favoriter.add_sesh_to_favorites(@sesh)
-      render :show
+      render status: :accepted
     else
       render status: :unauthorized
     end
