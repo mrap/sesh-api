@@ -18,9 +18,9 @@ class Api::V1::UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      @user
+      render status: :created
     else
-      render json: @user.errors, status: 422 # Unprocessable Entity
+      render nothing: true,  status: 422 # Unprocessable Entity
     end
   end
 
