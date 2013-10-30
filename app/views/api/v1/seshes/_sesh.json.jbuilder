@@ -2,7 +2,10 @@ json.id             @sesh.id
 
 json.info do |info|
   info.title        @sesh.title
-  info.audio_url    @sesh.audio.url
+end
+
+json.assets do |assets|
+  assets.audio_url  @sesh.audio.url
 end
 
 unless @sesh.is_anonymous

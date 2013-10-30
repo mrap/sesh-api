@@ -17,7 +17,10 @@ describe 'GET sesh' do
 
   it 'exposes sesh info' do
     json['info']['title'].should match @sesh.title
-    json['info']['audio_url'].should eq @sesh.audio.url
+  end
+
+  it 'exposes sesh assets' do
+    json['assets']['audio_url'].should eq @sesh.audio.url
   end
 
   it "exposes author's id and username" do
