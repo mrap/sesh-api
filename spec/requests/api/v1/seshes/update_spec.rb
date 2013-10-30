@@ -19,7 +19,7 @@ describe 'Updating sesh info' do
     end
 
     it 'exposes the sesh' do
-      json['info']['id']['$oid'].should match @sesh.id
+      json['id']['$oid'].should match @sesh.id
     end
   end
 

@@ -11,6 +11,10 @@ describe 'GET sesh' do
     response.code.should eq "200"
   end
 
+  it 'exposes sesh id' do
+    json['id']['$oid'].should match @sesh.id
+  end
+
   it 'exposes sesh info' do
     json['info']['title'].should match @sesh.title
     json['info']['audio_url'].should eq @sesh.audio.url
@@ -39,12 +43,11 @@ describe 'GET sesh' do
     end
 
     it 'returns json with error' do
-      json['error']['status'].should eq 404
+      response.status.should eq 404
     end
 
     it 'does not expose any sesh' do
-      json['info'].should be_nil
-      json['author'].should be_nil
+      response.body.should be_blank
     end
   end
 end
