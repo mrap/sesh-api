@@ -6,7 +6,10 @@ describe "GET a user" do
     @user           = create(:user)
     @sesh           = create(:sesh, author_id: @user.id)
     @anonymous_sesh = create(:anonymous_sesh, author_id: @user.id)
+    @favorite_sesh  = create(:sesh)
+    @user.add_sesh_to_favorites(@favorite_sesh)
     get "/api/v1/users/#{@user.slug}"
+
 
   end
 
@@ -34,6 +37,10 @@ describe "GET a user" do
 
     it 'exposes all user seshes (includes anonymous)' do
       json['seshes'].length.should eq 2
+    end
+
+    it "exposes user's favorites" do
+      json['favorites'].length.should eq 1
     end
   end
 
