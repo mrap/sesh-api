@@ -102,7 +102,8 @@ Body (requires `authentication_token` to access private user data and actions)
 
 Successful Response `status 200`
 
-    seshes: [ ALL SESHES ] # includes anonymous seshes
+    seshes: [ ALL SESHES ], # includes anonymous seshes
+    favorites: [ ALL FAVORITED SESHES ]
 
 Unsuccessful Response `status 200`
 
