@@ -3,13 +3,12 @@ require 'spec_helper'
 describe Sesh do
   subject(:sesh) { create(:sesh) }
 
+  it { should have_field(:title) }
+  it { should have_field(:is_anonymous).with_default_value_of(false) }
+  it { should have_field(:favoriters_count).with_default_value_of(0) }
   it { should belong_to(:author) }
-  its(:title)         { should_not be_nil }
-  its(:author)        { should_not be_nil }
-  its(:is_anonymous)  { should be_false }
-  it { should respond_to(:audio) }
-  its(:created_at)    { should_not be_nil }
   it { should have_and_belong_to_many :favoriters }
+  it { should respond_to(:audio) }
 
   # Validations
   it { should validate_presence_of(:author) }
@@ -61,6 +60,5 @@ describe Sesh do
         Sesh.most_favorited[1].should eq @second_most_favorited_sesh
       end
     end
-
   end
 end
