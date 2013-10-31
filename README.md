@@ -172,11 +172,9 @@ URL
 
     GET /seshes
 
-Body (optional `sort` parameters are `false` by default)
+Body (optional `sort_options` array)
 
-    sort: {
-        recent: true
-    }
+    sort: ["recent", "anonymous_only"]
 
 #### Creating a new sesh
 

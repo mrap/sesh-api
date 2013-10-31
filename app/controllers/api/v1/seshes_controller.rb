@@ -6,11 +6,9 @@ class Api::V1::SeshesController < ApplicationController
   # GET /seshes
   # GET /seshes.json
   def index
-    if    params[:sort][:recent]
-      @seshes = Sesh.recent
-    else
-      @seshes = Sesh.all
-    end
+    @seshes = Sesh.all
+    @seshes = @seshes.recent if params[:sort_options].include? "recent"
+    @seshes = @seshes.anonymous_only if params[:sort_options].include? "anonymous_only"
   end
 
   # GET /seshes/1

@@ -20,7 +20,7 @@ class Sesh
 
   # Named Scopes
   scope :recent,         ->{ order_by(created_at: :desc) } # newest first
-  scope :anonymous_only, ->{ where(is_anonymous: true)  }
+  scope :anonymous_only, ->{ where(is_anonymous: true) }
   scope :most_favorited, ->{ order_by(favoriters_count: :desc) }
 
   before_create :set_default_title
@@ -34,6 +34,11 @@ class Sesh
 
     def set_default_title
       self.title ||= self.id.to_s
+    end
+
+    def valid_scope?(scope)
+      vaild_scopes = ["recent", "anonymous_only", "most_favorited"]
+      valid_scopes.include?(scope)
     end
 
 end
