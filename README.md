@@ -166,6 +166,18 @@ Successful Response `status 200`
 
 `"author"` will not be exposed if the sesh is `anonymous`
 
+#### Getting a list of seshes
+
+URL
+
+    GET /seshes
+
+Body (optional `sort` parameters are `false` by default)
+
+    sort: {
+        recent: true
+    }
+
 #### Creating a new sesh
 
 URL

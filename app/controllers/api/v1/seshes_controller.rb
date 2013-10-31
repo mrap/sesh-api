@@ -6,9 +6,11 @@ class Api::V1::SeshesController < ApplicationController
   # GET /seshes
   # GET /seshes.json
   def index
-    @seshes = Sesh.all
-
-    render json: @seshes
+    if    params[:sort][:recent]
+      @seshes = Sesh.recent
+    else
+      @seshes = Sesh.all
+    end
   end
 
   # GET /seshes/1
