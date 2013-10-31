@@ -5,7 +5,10 @@ SeshApi::Application.routes.draw do
       resources :tokens, only:  [:create, :destroy]
       resources :users, except: [:new, :edit]
       resources :seshes, except: [:new, :edit] do
-        put :favorite, on: :member
+        member do
+          put :favorite
+          put :add_listener
+        end
       end
     end
   end

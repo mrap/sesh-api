@@ -1,11 +1,12 @@
 require 'spec_helper'
 
 describe Sesh do
+  let(:user)     { create(:user) }
   subject(:sesh) { create(:sesh) }
 
-  it { should have_fields(:title, :listeners_count) }
+  it { should have_fields(:title, :listens_count) }
   it { should have_field(:listeners_ids).with_default_value_of([]) }
-  it { should have_field(:listeners_count).with_default_value_of(0) }
+  it { should have_field(:listens_count).with_default_value_of(0) }
   it { should have_field(:is_anonymous).with_default_value_of(false) }
   it { should have_field(:favoriters_count).with_default_value_of(0) }
   it { should belong_to(:author) }
@@ -48,13 +49,12 @@ describe Sesh do
 
     describe '.most_favorited' do
       before do
-        @user   = create(:user)
-        @user2  = create(:user)
+        user2  = create(:user)
         @most_favorited_sesh = @seshes.last
         @second_most_favorited_sesh = @seshes.first
-        @user.add_sesh_to_favorites(@most_favorited_sesh)
-        @user2.add_sesh_to_favorites(@most_favorited_sesh)
-        @user2.add_sesh_to_favorites(@second_most_favorited_sesh)
+        user.add_sesh_to_favorites(@most_favorited_sesh)
+        user2.add_sesh_to_favorites(@most_favorited_sesh)
+        user2.add_sesh_to_favorites(@second_most_favorited_sesh)
       end
 
       it 'orders by most favorited first' do
@@ -65,19 +65,17 @@ describe Sesh do
   end
 
   describe 'adding unique_listener_ids' do
-    before do
-      @user = create(:user)
-      sesh.add_user_to_listeners(@user)
-    end
+    let(:add_listener) { sesh.add_user_id_to_listeners_ids(user.id) }
+    before             { add_listener }
 
-    its(:listeners_ids)   { should include @user.id }
-    its(:listeners_count) { should eq 1 }
+    its(:listeners_ids)   { should include user.id }
+    its(:listens_count) { should eq 1 }
 
     context 'when attempting to add a listener twice' do
-      before { sesh.add_user_to_listeners(@user) }
+      let(:double_add) { sesh.add_user_id_to_listeners_ids(user.id) }
 
       it "does not add to .listener_ids" do
-        sesh.listeners_count.should eq 1
+        expect{ double_add }.not_to change{ sesh.listens_count }
       end
     end
   end

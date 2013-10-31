@@ -18,6 +18,7 @@ describe 'GET sesh' do
   it 'exposes sesh info' do
     json['info']['title'].should match @sesh.title
     json['info']['favorites_count'].should eq @sesh.favoriters_count
+    json['info']['listens_count'].should eq @sesh.listens_count
   end
 
   it 'exposes sesh assets' do

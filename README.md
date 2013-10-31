@@ -153,6 +153,8 @@ Successful Response `status 200`
     },
     info: {
         title: "My Awesome Sesh"
+        favorites_count: 5,
+        listens_count: 50
     },
     assets: {
         audio_url: "http://s3-us-west-1.amazonaws.com/sesh-dev/seshes/audios/106f2838b7fcaa37693c804503b1a30a9080e5e5/original.mp3?1383039311"
@@ -161,7 +163,7 @@ Successful Response `status 200`
         id: {
             $oid: "5268a45c3386b7b1ce000001"
         },
-          username: "roland"
+        username: "roland"
     }
 
 `"author"` will not be exposed if the sesh is `anonymous`
@@ -231,5 +233,19 @@ Body
     favoriter_authentication_token: AUTH_TOKEN_OF_USER_FAVORITING
 
 Successful Response `status 201`
+
+    # exposes the sesh like normal
+
+#### Adding a `listen` to a sesh
+
+URL
+
+    PUT /seshes/:sesh_id/add_listener
+
+Body
+
+    listener_id: '5268a45c3386b7b1ce000001' # user that listens to a sesh
+
+Successful Response `status 202`
 
     # exposes the sesh like normal

@@ -3,6 +3,7 @@ json.id                 @sesh.id
 json.info do |info|
   info.title            @sesh.title
   info.favorites_count  @sesh.favoriters_count
+  info.listens_count    @sesh.listens_count
 end
 
 json.assets do |assets|

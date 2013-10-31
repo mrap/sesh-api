@@ -1,6 +1,6 @@
 class Api::V1::SeshesController < ApplicationController
 
-  before_action :get_sesh,            only: [:show, :update, :destroy, :favorite]
+  before_action :get_sesh,            only: [:show, :update, :destroy, :favorite, :add_listener]
   before_action :authenticate_author!, only: [:update, :destroy]
 
   # GET /seshes
@@ -53,6 +53,14 @@ class Api::V1::SeshesController < ApplicationController
       render status: :accepted
     else
       render status: :unauthorized
+    end
+  end
+
+  def add_listener
+    if @sesh.add_user_id_to_listeners_ids(params[:listener_id])
+      render status: :accepted
+    else
+      render nothing: true, status: :bad_request
     end
   end
 

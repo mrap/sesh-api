@@ -12,7 +12,7 @@ class Sesh
   field :is_anonymous,      type: Boolean,  default: false
   field :favoriters_count,  type: Integer,  default: 0
   field :listeners_ids,     type: Array,    default: []
-  field :listeners_count,   type: Integer,  default: 0
+  field :listens_count,     type: Integer,  default: 0
 
   # Assets
   has_mongoid_attached_file :audio, dependent: :destroy
@@ -28,10 +28,10 @@ class Sesh
   before_create :set_default_title
   before_save   :refresh_favoriters_count
 
-  def add_user_to_listeners(user)
-    if user.is_a?(User) and not self.listeners_ids.include? user.id
-      self.listeners_ids << user.id
-      self.listeners_count = self.listeners_ids.count
+  def add_user_id_to_listeners_ids(user_id)
+    if User.where(id: user_id).exists? and not self.listeners_ids.include? user_id
+      self.listeners_ids << user_id
+      self.listens_count = self.listeners_ids.count
     end
   end
 
