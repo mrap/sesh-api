@@ -36,10 +36,10 @@ describe User do
     end
   end
 
-  describe 'favoriting a sesh' do
+  describe 'add_sesh_to_favorites' do
     before { @sesh = create(:sesh) }
 
-    it '.favorite_sesh()' do
+    it 'works' do
       expect{ user.add_sesh_to_favorites(@sesh) }.to change{ user.favorite_seshes.count }.by(1)
     end
   end
