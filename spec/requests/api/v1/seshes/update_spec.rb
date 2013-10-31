@@ -33,9 +33,6 @@ describe 'Updating sesh info' do
     it 'returns 404' do
       response.code.should eq "404"
     end
-
-    it 'exposes correct error'
-
   end
 
   context 'when no valid auth_token in request' do
@@ -47,8 +44,5 @@ describe 'Updating sesh info' do
     it 'returns 401 code (Unauthorized)' do
       response.status.should eq 401
     end
-
-    it 'exposes correct error'
-
   end
 end
