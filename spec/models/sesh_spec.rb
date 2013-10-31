@@ -3,7 +3,9 @@ require 'spec_helper'
 describe Sesh do
   subject(:sesh) { create(:sesh) }
 
-  it { should have_field(:title) }
+  it { should have_fields(:title, :listeners_count) }
+  it { should have_field(:listeners_ids).with_default_value_of([]) }
+  it { should have_field(:listeners_count).with_default_value_of(0) }
   it { should have_field(:is_anonymous).with_default_value_of(false) }
   it { should have_field(:favoriters_count).with_default_value_of(0) }
   it { should belong_to(:author) }
@@ -61,4 +63,23 @@ describe Sesh do
       end
     end
   end
+
+  describe 'adding unique_listener_ids' do
+    before do
+      @user = create(:user)
+      sesh.add_user_to_listeners(@user)
+    end
+
+    its(:listeners_ids)   { should include @user.id }
+    its(:listeners_count) { should eq 1 }
+
+    context 'when attempting to add a listener twice' do
+      before { sesh.add_user_to_listeners(@user) }
+
+      it "does not add to .listener_ids" do
+        sesh.listeners_count.should eq 1
+      end
+    end
+  end
+
 end
