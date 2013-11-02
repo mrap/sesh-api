@@ -2,9 +2,12 @@ require 'spec_helper'
 
 describe 'GET sesh' do
 
+  let(:get_request) { get "/api/v1/seshes/#{@sesh.id}" }
+
   before do
     @sesh = create(:sesh)
-    get "/api/v1/seshes/#{@sesh.id}"
+    @comment = create(:comment, sesh: @sesh)
+    get_request
   end
 
   it 'succeeds' do
@@ -19,6 +22,10 @@ describe 'GET sesh' do
     json['info']['title'].should match @sesh.title
     json['info']['favorites_count'].should eq @sesh.favoriters_count
     json['info']['listens_count'].should eq @sesh.listens_count
+  end
+
+  it 'exposes sesh comments' do
+    json['comments'][0]['content'].should match @comment.content
   end
 
   it 'exposes sesh assets' do

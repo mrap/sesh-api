@@ -6,6 +6,8 @@ json.info do |info|
   info.listens_count    @sesh.listens_count
 end
 
+json.comments           @sesh.comments
+
 json.assets do |assets|
   assets.audio_url      @sesh.audio.url
 end
