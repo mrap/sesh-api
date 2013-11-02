@@ -15,4 +15,17 @@ describe Comment do
   it { should validate_presence_of :user }
   it { should validate_presence_of :content }
 
+  describe "scopes" do
+    describe ".recent" do
+      before do
+        @oldest = create(:comment)
+        @newest = create(:comment, created_at: DateTime.now.advance(minutes: 1))
+      end
+
+      it "orders comments newest to oldest" do
+        Comment.recent.first.should eq @newest
+        Comment.recent.last.should eq @oldest
+      end
+    end
+  end
 end

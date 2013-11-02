@@ -13,4 +13,7 @@ class Comment
   # Validations
   validates_presence_of :sesh, :user, :content
 
+  # Named Scopes
+  scope :recent,         ->{ order_by(created_at: :desc) } # newest first
+
 end
