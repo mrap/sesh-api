@@ -5,7 +5,7 @@ class Comment
   # Relations
   belongs_to  :sesh
   belongs_to  :user
-  has_many    :replies, class_name: Comment
+  has_many    :replies, class_name: "Comment"
 
   # Fields
   field       :content, type: String
