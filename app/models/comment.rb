@@ -14,6 +14,6 @@ class Comment
   validates_presence_of :sesh, :user, :content
 
   # Named Scopes
-  scope :recent,         ->{ order_by(created_at: :desc) } # newest first
+  default_scope         ->{ order_by(created_at: :desc) } # newest first
 
 end
