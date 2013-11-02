@@ -152,10 +152,11 @@ Successful Response `status 200`
         $oid: "526f814fe3e9ef29ff000001"
     },
     info: {
-        title: "My Awesome Sesh"
+        title: "My Awesome Sesh",
         favorites_count: 5,
         listens_count: 50
     },
+    comments: [ COMMENTS ],
     assets: {
         audio_url: "http://s3-us-west-1.amazonaws.com/sesh-dev/seshes/audios/106f2838b7fcaa37693c804503b1a30a9080e5e5/original.mp3?1383039311"
     },
