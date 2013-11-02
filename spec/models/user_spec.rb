@@ -11,6 +11,7 @@ describe User do
   its(:authentication_token)  { should_not be_nil }
   it { should have_many(:seshes).with_dependent(:destroy) }
   it { should have_and_belong_to_many(:favorite_seshes) }
+  it { should have_many(:comments).with_dependent(:destroy) }
 
   describe ".slug" do
     subject(:user) { create(:user, username: 'MikeRoland') }

@@ -10,6 +10,7 @@ describe Sesh do
   it { should have_field(:is_anonymous).with_default_value_of(false) }
   it { should have_field(:favoriters_count).with_default_value_of(0) }
   it { should belong_to(:author) }
+  it { should have_many(:comments).with_dependent(:destroy) }
   it { should have_and_belong_to_many :favoriters }
   it { should respond_to(:audio) }
 

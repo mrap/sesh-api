@@ -6,6 +6,7 @@ class Sesh
   # Relations
   belongs_to :author,   class_name: 'User', inverse_of: :seshes
   has_and_belongs_to_many :favoriters, class_name: 'User', inverse_of: :favorite_seshes
+  has_many :comments, dependent: :destroy
 
   # Fields
   field :title,             type: String
