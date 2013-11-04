@@ -8,7 +8,7 @@ gem 'jbuilder'
 gem 'figaro'
 
 gem 'factory_girl_rails'
-gem 'mongoid', github: 'mrap/mongoid'
+gem 'mongoid', github: 'mongoid/mongoid'
 gem 'bson_ext'
 gem 'devise'
 gem 'mongoid_slug'
@@ -18,12 +18,12 @@ gem 'aws-sdk', '~> 1.3.4'
 # Testing
 group :test, :development do
   gem 'rspec-rails'
+  gem 'guard-rspec', require: false
 end
 
 group :test do
   gem 'database_cleaner'
   gem 'mongoid-rspec'
-  gem 'guard-rspec', github: 'guard/guard-rspec', require: false
 end
 
 
