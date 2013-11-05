@@ -6,6 +6,7 @@ class User
   has_many :seshes, class_name: 'Sesh', inverse_of: :author, dependent: :destroy
   has_and_belongs_to_many :favorite_seshes, class_name: 'Sesh', inverse_of: :favoriters
   has_many :comments, dependent: :destroy
+  embeds_one :api_key, autobuild: true
 
   # Fields
   field :username

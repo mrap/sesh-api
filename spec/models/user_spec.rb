@@ -6,6 +6,7 @@ describe User do
 
   it { should validate_presence_of(:username) }
   it { should validate_uniqueness_of(:username) }
+  it { should embed_one(:api_key).with_autobuild }
   its(:username)              { should_not be_nil }
   its(:slug)                  { should_not be_nil }
   its(:authentication_token)  { should_not be_nil }
