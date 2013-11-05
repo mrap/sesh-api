@@ -45,9 +45,4 @@ class Api::V1::TokensController < ApplicationController
       params.required(:login).permit(:email, :password)
     end
 
-    def user_token_params
-      params.required(:a)
-    end
-
-
 end
